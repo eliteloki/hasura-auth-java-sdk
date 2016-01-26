@@ -7,36 +7,32 @@ import okhttp3.ResponseBody;
 import com.google.gson.*;
 import java.lang.reflect.Type;
 
-public class Call<T> {
+public class Call<T, E extends Exception> {
 
     /* Underlying okhttp call */
     private okhttp3.Call rawCall;
     /* The type of the body */
-    private final Type bodyType;
+    private final Converter<T, E> converter;
 
-    private static final Gson gson = new GsonBuilder().create();
-
-    public Call(okhttp3.Call rawCall, Type bodyType) {
-        this.bodyType = bodyType;
-        this.rawCall = rawCall;
+    public Call(okhttp3.Call rawCall, Converter<T, E> converter) {
+        this.converter = converter;
+        this.rawCall   = rawCall;
     }
 
     public Request request() {
         return rawCall.request();
     }
 
-    public void enqueue(final Callback<T> callback) {
+    public void enqueue(final Callback<T, E> callback) {
         rawCall.enqueue(new okhttp3.Callback() {
                 @Override public void onResponse(okhttp3.Call call, okhttp3.Response rawResponse)
                     throws IOException {
                     T response;
                     try {
-                        response = parseResponse(rawResponse);
-                    } catch (HasuraException he) {
-                        callFailure(he);
-                        return;
-                    } catch (Throwable e) {
-                        callFailure(new HasuraException(e));
+                        response = converter.fromResponse(rawResponse);
+                    }
+                    catch (Exception e) {
+                        callFailure(converter.castException(e));
                         return;
                     }
                     callSuccess(response);
@@ -44,13 +40,13 @@ public class Call<T> {
 
                 @Override public void onFailure(okhttp3.Call call, IOException e) {
                     try {
-                        callFailure(new HasuraException(e));
+                        callFailure(converter.fromIOException(e));
                     } catch (Throwable t) {
                         t.printStackTrace();
                     }
                 }
 
-                private void callFailure(HasuraException he) {
+                private void callFailure(E he) {
                     try {
                         callback.onFailure(he);
                     } catch (Throwable t) {
@@ -72,45 +68,13 @@ public class Call<T> {
         return rawCall.isExecuted();
     }
 
-    public T execute() throws HasuraException {
+    public T execute() throws E {
         try {
-            return parseResponse(rawCall.execute());
+            return converter.fromResponse(rawCall.execute());
         }
         catch (IOException e) {
-            throw new HasuraException(1, "Connection error : ", e);
-        }
-    }
-
-    T parseResponse(okhttp3.Response rawResponse) throws HasuraException {
-        int code = rawResponse.code();
-
-        if (code == 200) {
-            return parseJson(rawResponse, bodyType);
-        }
-        else {
-            HasuraErrorResponse err = parseJson(rawResponse, HasuraErrorResponse.class);
-            throw new HasuraException(code, err.getMessage());
-        }
-    }
-
-    <R> R parseJson(okhttp3.Response response, Type bodyType) throws HasuraException {
-        int code = response.code();
-        try {
-            String rawBody = response.body().string();
-            System.out.println(rawBody);
-            return gson.fromJson(rawBody, bodyType);
-        }
-        catch (JsonSyntaxException e) {
-            String msg = "FATAL : JSON strucutre not as expected. Schema changed maybe? : " + e.getMessage();
-            throw new HasuraException(code, msg, e);
-        }
-        catch (JsonParseException e) {
-            String msg = "FATAL : Server didn't return vaild JSON : " + e.getMessage();
-            throw new HasuraException(code, msg, e);
-        }
-        catch (IOException e) {
-            String msg = "FATAL : Decoding response body failed : " + e.getMessage();
-            throw new HasuraException(code, msg, e);
+            // throw new HasuraJsonException(1, "Connection error : ", e);
+            throw converter.fromIOException(e);
         }
     }
 

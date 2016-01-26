@@ -1,6 +1,6 @@
 package io.hasura.core;
 
-public interface Callback<T> {
+public interface Callback<T, E> {
   void onSuccess(T response);
-  void onFailure(HasuraException e);
+  void onFailure(E e);
 }

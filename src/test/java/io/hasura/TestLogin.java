@@ -10,7 +10,7 @@ import java.io.IOException;
 public class TestLogin {
 
     @Test
-    public void run() throws IOException, HasuraException {
+    public void run() throws IOException, HasuraAuthException {
 
         AuthService authService = new AuthService("http://104.155.219.208");
         LoginResponse r = authService.login("aladdin", "abracadabra", null).execute();

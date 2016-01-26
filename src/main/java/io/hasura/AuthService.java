@@ -42,28 +42,28 @@ public class AuthService {
         return this.dbUrl;
     }
 
-    private <T> Call<T> mkCall(String url, String jsonBody, Type bodyType) {
+    private <T> Call<T, HasuraAuthException> mkCall(String url, String jsonBody, Type bodyType) {
         RequestBody reqBody = RequestBody.create(JSON, jsonBody);
         Request request = new Request.Builder()
             .url(this.dbUrl + url)
             .post(reqBody)
             .build();
-        return new Call<>(httpClient.newCall(request), bodyType);
+        return new Call<>(httpClient.newCall(request), new AuthConverter<T>(bodyType));
     }
 
-    Call<RegisterResponse> register(RegisterRequest r) {
+    Call<RegisterResponse, HasuraAuthException> register(RegisterRequest r) {
         String jsonBody = gson.toJson(r);
         Type respType   = new TypeToken<RegisterResponse>() {}.getType();
         return mkCall("/auth/signup", jsonBody, respType);
     }
 
-    Call<LoginResponse> login(LoginRequest r) {
+    Call<LoginResponse, HasuraAuthException> login(LoginRequest r) {
         String jsonBody = gson.toJson(r);
         Type respType   = new TypeToken<LoginResponse>() {}.getType();
         return mkCall("/auth/login", jsonBody, respType);
     }
 
-    Call<LoginResponse> login(String userName, String password, JsonObject info) {
+    Call<LoginResponse, HasuraAuthException> login(String userName, String password, JsonObject info) {
         return this.login(new LoginRequest(userName, password, info));
     }
 }

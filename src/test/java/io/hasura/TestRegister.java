@@ -10,7 +10,7 @@ import java.io.IOException;
 public class TestRegister {
 
     @Test
-    public void run() throws IOException, HasuraException {
+    public void run() throws IOException, HasuraAuthException {
 
         AuthService authService = new AuthService("http://104.155.219.208");
         RegisterRequest rq = new RegisterRequest();
