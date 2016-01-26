@@ -41,6 +41,9 @@ public class AuthResponseConverter<T> implements Converter<T, AuthException> {
                 case 401:
                     errCode = AuthError.UNAUTHORIZED;
                     break;
+                case 402:
+                    errCode = AuthError.REQUEST_FAILED;
+                    break;
                 case 403:
                     errCode = AuthError.INVALID_SESSION;
                     break;
