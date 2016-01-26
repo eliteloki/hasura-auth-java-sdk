@@ -51,19 +51,19 @@ public class AuthService {
         return new Call<>(httpClient.newCall(request), new AuthResponseConverter<T>(bodyType));
     }
 
-    Call<RegisterResponse, AuthException> register(RegisterRequest r) {
+    public Call<RegisterResponse, AuthException> register(RegisterRequest r) {
         String jsonBody = gson.toJson(r);
         Type respType   = new TypeToken<RegisterResponse>() {}.getType();
         return mkCall("/auth/signup", jsonBody, respType);
     }
 
-    Call<LoginResponse, AuthException> login(LoginRequest r) {
+    public Call<LoginResponse, AuthException> login(LoginRequest r) {
         String jsonBody = gson.toJson(r);
         Type respType   = new TypeToken<LoginResponse>() {}.getType();
         return mkCall("/auth/login", jsonBody, respType);
     }
 
-    Call<LoginResponse, AuthException> login(String userName, String password, JsonObject info) {
+    public Call<LoginResponse, AuthException> login(String userName, String password, JsonObject info) {
         return this.login(new LoginRequest(userName, password, info));
     }
 }
