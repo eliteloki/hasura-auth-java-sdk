@@ -1,6 +1,5 @@
 package io.hasura.core;
 
-import io.hasura.core.AuthService;
 import io.hasura.auth.*;
 
 import org.junit.Test;

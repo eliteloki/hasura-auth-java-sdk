@@ -1,4 +1,4 @@
-package io.hasura.core;
+package io.hasura.auth;
 
 public enum AuthError {
     INVALID_SESSION,
