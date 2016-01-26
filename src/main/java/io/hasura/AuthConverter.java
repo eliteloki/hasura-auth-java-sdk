@@ -33,7 +33,7 @@ public class AuthConverter<T> implements Converter<T, HasuraAuthException> {
             }
             else {
                 AuthError err = Util.parseJson(response, AuthError.class);
-                throw new HasuraJsonException(code, err.getMessage());
+                throw new HasuraAuthException(code, err.getMessage());
             }
         }
         catch (HasuraJsonException e) {
