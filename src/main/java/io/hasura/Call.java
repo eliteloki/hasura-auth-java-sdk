@@ -72,22 +72,45 @@ public class Call<T> {
         return rawCall.isExecuted();
     }
 
-    public T execute() throws HasuraException, IOException {
-        return parseResponse(rawCall.execute());
+    public T execute() throws HasuraException {
+        try {
+            return parseResponse(rawCall.execute());
+        }
+        catch (IOException e) {
+            throw new HasuraException(1, "Connection error : ", e);
+        }
     }
 
-    T parseResponse(okhttp3.Response rawResponse) throws HasuraException, IOException {
-        String rawBody = rawResponse.body().string();
-        System.out.println(rawBody);
-
+    T parseResponse(okhttp3.Response rawResponse) throws HasuraException {
         int code = rawResponse.code();
+
         if (code == 200) {
-            // TODO : try and catch json exceptions
-            return gson.fromJson(rawBody, bodyType);
+            return parseJson(rawResponse, bodyType);
         }
         else {
-            HasuraErrorResponse err = gson.fromJson(rawBody, HasuraErrorResponse.class);
-            throw new HasuraException(err.getCode(), err.getMessage());
+            HasuraErrorResponse err = parseJson(rawResponse, HasuraErrorResponse.class);
+            throw new HasuraException(code, err.getMessage());
+        }
+    }
+
+    <R> R parseJson(okhttp3.Response response, Type bodyType) throws HasuraException {
+        int code = response.code();
+        try {
+            String rawBody = response.body().string();
+            System.out.println(rawBody);
+            return gson.fromJson(rawBody, bodyType);
+        }
+        catch (JsonSyntaxException e) {
+            String msg = "FATAL : JSON strucutre not as expected. Schema changed maybe? : " + e.getMessage();
+            throw new HasuraException(code, msg, e);
+        }
+        catch (JsonParseException e) {
+            String msg = "FATAL : Server didn't return vaild JSON : " + e.getMessage();
+            throw new HasuraException(code, msg, e);
+        }
+        catch (IOException e) {
+            String msg = "FATAL : Decoding response body failed : " + e.getMessage();
+            throw new HasuraException(code, msg, e);
         }
     }
 
