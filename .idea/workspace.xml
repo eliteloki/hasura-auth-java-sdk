@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="39f7e88a-6a07-4bb1-9527-69e3e8c2fcd9" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/io/hasura/auth/LoginResponse.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/io/hasura/auth/RegisterResponse.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/io/hasura/AuthError.java" afterPath="$PROJECT_DIR$/src/main/java/io/hasura/AuthError.java" />
-    </list>
+    <list default="true" id="39f7e88a-6a07-4bb1-9527-69e3e8c2fcd9" name="Default" comment="" />
     <ignored path="hasura-auth-java-sdk.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
