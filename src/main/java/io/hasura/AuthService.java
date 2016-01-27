@@ -1,6 +1,6 @@
-package io.hasura.auth;
+package io.hasura;
 
-import io.hasura.core.*;
+import io.hasura.auth.*;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -51,19 +51,101 @@ public class AuthService {
         return new Call<>(httpClient.newCall(request), new AuthResponseConverter<T>(bodyType));
     }
 
-    public Call<RegisterResponse, AuthException> register(RegisterRequest r) {
+    public Call<User, AuthException> register(RegisterRequest r) {
         String jsonBody = gson.toJson(r);
-        Type respType   = new TypeToken<RegisterResponse>() {}.getType();
+        Type respType   = new TypeToken<User>() {}.getType();
         return mkCall("/auth/signup", jsonBody, respType);
     }
 
-    public Call<LoginResponse, AuthException> login(LoginRequest r) {
+    public Call<User, AuthException> login(LoginRequest r) {
         String jsonBody = gson.toJson(r);
-        Type respType   = new TypeToken<LoginResponse>() {}.getType();
+        Type respType   = new TypeToken<User>() {}.getType();
         return mkCall("/auth/login", jsonBody, respType);
     }
 
-    public Call<LoginResponse, AuthException> login(String userName, String password, JsonObject info) {
+
+
+    public Call<Message, AuthException> verifyOTP(VerifyOtp r) {
+        String jsonBody = gson.toJson(r);
+        Type respType   = new TypeToken<User>() {}.getType();
+        return mkCall("/auth/confirm_mobile", jsonBody, respType);
+    }
+
+    public Call<Message, AuthException> resendOTP(ResendOtp r) {
+        String jsonBody = gson.toJson(r);
+        Type respType   = new TypeToken<User>() {}.getType();
+        return mkCall("/auth/resend_otp_mobile", jsonBody, respType);
+    }
+
+    public Call<Message, AuthException> logout() {
+        String jsonBody = gson.toJson("");
+        Type respType   = new TypeToken<User>() {}.getType();
+        return mkCall("/auth/logout", jsonBody, respType);
+    }
+
+    public Call<User, AuthException> credentials() {
+        String jsonBody = gson.toJson("");
+        Type respType   = new TypeToken<User>() {}.getType();
+        return mkCall("/auth/get_credentials", jsonBody, respType);
+    }
+
+    public Call<Message, AuthException> changePassword(ChangePassword r) {
+        String jsonBody = gson.toJson(r);
+        Type respType   = new TypeToken<User>() {}.getType();
+        return mkCall("/auth/change_password", jsonBody, respType);
+    }
+
+    public Call<Message, AuthException> forgotPassword(ForgotPassword r) {
+        String jsonBody = gson.toJson(r);
+        Type respType   = new TypeToken<User>() {}.getType();
+        return mkCall("/auth/forgot_password", jsonBody, respType);
+    }
+
+    public Call<Message, AuthException> resetPassword(ResetPassword r) {
+        String jsonBody = gson.toJson(r);
+        Type respType   = new TypeToken<User>() {}.getType();
+        return mkCall("/auth/reset_password", jsonBody, respType);
+    }
+
+    public Call<Message, AuthException> changeMobile(ChangeMobile r) {
+        String jsonBody = gson.toJson(r);
+        Type respType   = new TypeToken<User>() {}.getType();
+        return mkCall("/auth/change_mobile", jsonBody, respType);
+    }
+
+    public Call<Message, AuthException> changeUserName(ChangeUserName r) {
+        String jsonBody = gson.toJson(r);
+        Type respType   = new TypeToken<User>() {}.getType();
+        return mkCall("/auth/change_username", jsonBody, respType);
+    }
+
+    public Call<Message, AuthException> resendEmail(ResendEmail r) {
+        String jsonBody = gson.toJson(r);
+        Type respType   = new TypeToken<User>() {}.getType();
+        return mkCall("/auth/resend_verify_email", jsonBody, respType);
+    }
+
+    public Call<Message, AuthException> confirmEmail(ConfirmEmail r) {
+        String jsonBody = gson.toJson(r);
+        Type respType   = new TypeToken<User>() {}.getType();
+        return mkCall("/auth/confirm_email", jsonBody, respType);
+    }
+
+    public Call<Message, AuthException> changeEmail(ChangeEmail r) {
+        String jsonBody = gson.toJson(r);
+        Type respType   = new TypeToken<User>() {}.getType();
+        return mkCall("/auth/change_email", jsonBody, respType);
+    }
+
+    public Call<Message, AuthException> deleteAccount(DeleteAccount r) {
+        String jsonBody = gson.toJson(r);
+        Type respType   = new TypeToken<User>() {}.getType();
+        return mkCall("/auth/delete_account", jsonBody, respType);
+    }
+
+
+
+    public Call<User, AuthException> login(String userName, String password, JsonObject info) {
         return this.login(new LoginRequest(userName, password, info));
     }
 }

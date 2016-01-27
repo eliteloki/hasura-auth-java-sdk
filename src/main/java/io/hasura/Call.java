@@ -1,4 +1,4 @@
-package io.hasura.core;
+package io.hasura;
 
 import java.io.IOException;
 import okhttp3.MediaType;

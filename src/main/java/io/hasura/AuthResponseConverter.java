@@ -1,6 +1,5 @@
-package io.hasura.auth;
+package io.hasura;
 
-import io.hasura.core.*;
 import java.io.IOException;
 import java.lang.reflect.Type;
 

@@ -1,4 +1,4 @@
-package io.hasura.auth;
+package io.hasura;
 
 public class AuthException extends Exception {
     private static final long serialVersionUID = 1;

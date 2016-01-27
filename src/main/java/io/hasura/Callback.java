@@ -1,4 +1,4 @@
-package io.hasura.core;
+package io.hasura;
 
 public interface Callback<T, E> {
   void onSuccess(T response);

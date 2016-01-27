@@ -1,4 +1,4 @@
-package io.hasura.core;
+package io.hasura;
 
 public class HasuraJsonException extends Exception {
   private static final long serialVersionUID = 1;

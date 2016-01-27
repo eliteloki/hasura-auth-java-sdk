@@ -1,4 +1,4 @@
-package io.hasura.core;
+package io.hasura;
 
 import java.lang.reflect.Type;
 import com.google.gson.*;
