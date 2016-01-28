@@ -67,19 +67,19 @@ public class AuthService {
 
     public Call<Message, AuthException> verifyOTP(VerifyOtp r) {
         String jsonBody = gson.toJson(r);
-        Type respType   = new TypeToken<User>() {}.getType();
+        Type respType   = new TypeToken<Message>() {}.getType();
         return mkCall("/auth/confirm_mobile", jsonBody, respType);
     }
 
     public Call<Message, AuthException> resendOTP(ResendOtp r) {
         String jsonBody = gson.toJson(r);
-        Type respType   = new TypeToken<User>() {}.getType();
+        Type respType   = new TypeToken<Message>() {}.getType();
         return mkCall("/auth/resend_otp_mobile", jsonBody, respType);
     }
 
     public Call<Message, AuthException> logout() {
         String jsonBody = gson.toJson("");
-        Type respType   = new TypeToken<User>() {}.getType();
+        Type respType   = new TypeToken<Message>() {}.getType();
         return mkCall("/auth/logout", jsonBody, respType);
     }
 
@@ -91,61 +91,55 @@ public class AuthService {
 
     public Call<Message, AuthException> changePassword(ChangePassword r) {
         String jsonBody = gson.toJson(r);
-        Type respType   = new TypeToken<User>() {}.getType();
+        Type respType   = new TypeToken<Message>() {}.getType();
         return mkCall("/auth/change_password", jsonBody, respType);
     }
 
     public Call<Message, AuthException> forgotPassword(ForgotPassword r) {
         String jsonBody = gson.toJson(r);
-        Type respType   = new TypeToken<User>() {}.getType();
+        Type respType   = new TypeToken<Message>() {}.getType();
         return mkCall("/auth/forgot_password", jsonBody, respType);
     }
 
     public Call<Message, AuthException> resetPassword(ResetPassword r) {
         String jsonBody = gson.toJson(r);
-        Type respType   = new TypeToken<User>() {}.getType();
+        Type respType   = new TypeToken<Message>() {}.getType();
         return mkCall("/auth/reset_password", jsonBody, respType);
     }
 
     public Call<Message, AuthException> changeMobile(ChangeMobile r) {
         String jsonBody = gson.toJson(r);
-        Type respType   = new TypeToken<User>() {}.getType();
+        Type respType   = new TypeToken<Message>() {}.getType();
         return mkCall("/auth/change_mobile", jsonBody, respType);
     }
 
     public Call<Message, AuthException> changeUserName(ChangeUserName r) {
         String jsonBody = gson.toJson(r);
-        Type respType   = new TypeToken<User>() {}.getType();
+        Type respType   = new TypeToken<Message>() {}.getType();
         return mkCall("/auth/change_username", jsonBody, respType);
     }
 
     public Call<Message, AuthException> resendEmail(ResendEmail r) {
         String jsonBody = gson.toJson(r);
-        Type respType   = new TypeToken<User>() {}.getType();
+        Type respType   = new TypeToken<Message>() {}.getType();
         return mkCall("/auth/resend_verify_email", jsonBody, respType);
     }
 
     public Call<Message, AuthException> confirmEmail(ConfirmEmail r) {
         String jsonBody = gson.toJson(r);
-        Type respType   = new TypeToken<User>() {}.getType();
+        Type respType   = new TypeToken<Message>() {}.getType();
         return mkCall("/auth/confirm_email", jsonBody, respType);
     }
 
     public Call<Message, AuthException> changeEmail(ChangeEmail r) {
         String jsonBody = gson.toJson(r);
-        Type respType   = new TypeToken<User>() {}.getType();
+        Type respType   = new TypeToken<Message>() {}.getType();
         return mkCall("/auth/change_email", jsonBody, respType);
     }
 
     public Call<Message, AuthException> deleteAccount(DeleteAccount r) {
         String jsonBody = gson.toJson(r);
-        Type respType   = new TypeToken<User>() {}.getType();
+        Type respType   = new TypeToken<Message>() {}.getType();
         return mkCall("/auth/delete_account", jsonBody, respType);
-    }
-
-
-
-    public Call<User, AuthException> login(String userName, String password, JsonObject info) {
-        return this.login(new LoginRequest(userName, password, info));
     }
 }
