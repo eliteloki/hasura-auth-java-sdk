@@ -1,19 +1,18 @@
 package io.hasura;
 
-import io.hasura.auth.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.net.CookieManager;
+
+import io.hasura.auth.*;
+import okhttp3.JavaNetCookieJar;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import com.google.gson.*;
-import com.google.gson.reflect.*;
-import java.lang.reflect.Type;
-
-import okhttp3.JavaNetCookieJar;
-
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 
 public class AuthService {
 
@@ -23,11 +22,12 @@ public class AuthService {
 
     private OkHttpClient httpClient;
     private String dbUrl;
+    private CookieManager cookieManager;
 
-    public AuthService(String dbUrl) {
+
+
+    public AuthService(String dbUrl, CookieManager cookieManager) {
         this.dbUrl = dbUrl;
-        CookieManager cookieManager = new CookieManager();
-        cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
         this.httpClient =
             new OkHttpClient.Builder()
                             .cookieJar(new JavaNetCookieJar(cookieManager))
@@ -142,4 +142,7 @@ public class AuthService {
         Type respType   = new TypeToken<Message>() {}.getType();
         return mkCall("/auth/delete_account", jsonBody, respType);
     }
+
+
+
 }

@@ -1,5 +1,7 @@
 package io.hasura;
 
+import com.google.gson.JsonObject;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 
@@ -8,6 +10,16 @@ public class AuthResponseConverter<T> implements Converter<T, AuthException> {
     static class AuthErrorResponse {
         private int code;
         private String message;
+        private JsonObject info;
+        private String error_code;
+
+        public JsonObject getInfo() {
+            return info;
+        }
+
+        public String getErrorCode() {
+            return error_code;
+        }
 
         public int getCode() {
             return this.code;
@@ -54,7 +66,7 @@ public class AuthResponseConverter<T> implements Converter<T, AuthException> {
                     errCode = AuthError.UNEXPECTED_CODE;
                     break;
                 }
-                throw new AuthException(errCode, err.getMessage());
+                throw new AuthException(errCode, err.getMessage(), err.getInfo(), err.getErrorCode());
             }
         }
         catch (HasuraJsonException e) {
